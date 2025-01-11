@@ -46,8 +46,6 @@ The main script is `arc19.js`. It takes an Algorand Asset ID as input and perfor
       * Attempts to retrieve and display the JSON metadata from the resolved IPFS URL.
 5.  **Extracts Image URL (Optional):**
       * If the metadata contains an `image` property (in the format `ipfs://<CID>`), it constructs and displays the full image URL.
-6.  **Extracts ARC69 Metadata (Optional):**
-      * Attempts to retrieve and display ARC69 metadata from the reserve address's account information.
 
 **To run the script:**
 
@@ -66,14 +64,14 @@ node arc19.js
 **Output:**
 
 ```
-1. Fetching asset information for asset ID: 66753108
+1. Fetching asset information for asset ID: 812520710
    - Asset information found.
 2. Extracting relevant information from asset parameters...
-   - Encoded URL: template-ipfs://{ipfscid:0:dag-pb:reserve:sha2-256}
-   - Reserve Address: EEQYWGGBHRDAMTEVDPVOSDVX3HJQIG6K6IVNR3RXHYOHV64ZWAEISS4CTI
+   - Encoded URL: template-ipfs://{ipfscid:1:raw:reserve:sha2-256}#arc3
+   - Reserve Address: V7KZB22MYOYYBTYYDIKNZK6LEDSCQZ6ACZTJQD5TO7KARGCGC7RORKI3ZQ
 3. Validating ARC19 URL format...
-   - Version: 0
-   - Codec Name: dag-pb
+   - Version: 1
+   - Codec Name: raw
    - Hash Type Name: sha2-256
 4. Decoding reserve address...
    - Reserve Address (bytes): Uint8Array(32) [ ... ]
@@ -82,16 +80,36 @@ node arc19.js
 6. Encoding reserve bytes to multihash...
    - Encoded Multihash: Uint8Array(34) [ ... ]
 7. Constructing CID...
-   - CID: QmQZyq4b89RfaUw8GESPd2re4hJqB8bnm4kVHNtyQrHnnK
+   - CID: bafkreifp2wiowtgdwgam6ga2ctokxsza4qugpqawm2ma7m3x2qejqrqx4i
 8. Building full IPFS URL...
-   - IPFS URL: [https://ipfs.algonode.dev/ipfs/QmQZyq4b89RfaUw8GESPd2re4hJqB8bnm4kVHNtyQrHnnK](https://ipfs.algonode.dev/ipfs/QmQZyq4b89RfaUw8GESPd2re4hJqB8bnm4kVHNtyQrHnnK)
+   - IPFS URL: [https://ipfs.algonode.dev/ipfs/bafkreifp2wiowtgdwgam6ga2ctokxsza4qugpqawm2ma7m3x2qejqrqx4i](https://ipfs.algonode.dev/ipfs/bafkreifp2wiowtgdwgam6ga2ctokxsza4qugpqawm2ma7m3x2qejqrqx4i)
 9. Fetching and displaying metadata from IPFS...
-   - Metadata fetched successfully: { ... }
+   - Metadata fetched successfully: {
+  name: 'Mostly Frens #0014',
+  description: 'Dreamt by M.N.G.O #14 (358525928)',
+  standard: 'arc3',
+  decimals: 0,
+  image: 'ipfs://bafybeiff2eh6gadtu55pwj4nx47lyd2dpoemlzp37lhf5lrpgqffhmalg4',
+  image_mimetype: 'image/png',
+  properties: {
+    Background: 'Hazey Yellow',
+    Body: 'Mostly Purple',
+    Clothing: 'Jail Berd Song',
+    Eyes: 'Standard',
+    Hat: 'Repunzzle',
+    'Left Ear': 'Moon Rock',
+    Mouth: 'Standard',
+    Neck: 'Strawberry Laces',
+    'Pet Tag': 'Eggplant',
+    Tattoo: 'Postman Tatts'
+  },
+  filters: { 'Quest Level': 18, Stage: 'REM' }
+}
 10. Extracting and displaying image URL from metadata...
-   - Image URL: [https://ipfs.algonode.dev/ipfs/QmQZyq4b89RfaUw8GESPd2re4hJqB8bnm4kVHNtyQrHnnK](https://ipfs.algonode.dev/ipfs/QmQZyq4b89RfaUw8GESPd2re4hJqB8bnm4kVHNtyQrHnnK)
+   - Image URL: [https://ipfs.algonode.dev/ipfs/bafybeiff2eh6gadtu55pwj4nx47lyd2dpoemlzp37lhf5lrpgqffhmalg4](https://ipfs.algonode.dev/ipfs/bafybeiff2eh6gadtu55pwj4nx47lyd2dpoemlzp37lhf5lrpgqffhmalg4)
 
-Final Decoded IPFS URL: [https://ipfs.algonode.dev/ipfs/QmQZyq4b89RfaUw8GESPd2re4hJqB8bnm4kVHNtyQrHnnK](https://ipfs.algonode.dev/ipfs/QmQZyq4b89RfaUw8GESPd2re4hJqB8bnm4kVHNtyQrHnnK)
-Image URL: [https://ipfs.algonode.dev/ipfs/QmQZyq4b89RfaUw8GESPd2re4hJqB8bnm4kVHNtyQrHnnK](https://ipfs.algonode.dev/ipfs/QmQZyq4b89RfaUw8GESPd2re4hJqB8bnm4kVHNtyQrHnnK)
+Final Decoded IPFS URL: [https://ipfs.algonode.dev/ipfs/bafkreifp2wiowtgdwgam6ga2ctokxsza4qugpqawm2ma7m3x2qejqrqx4i](https://ipfs.algonode.dev/ipfs/bafkreifp2wiowtgdwgam6ga2ctokxsza4qugpqawm2ma7m3x2qejqrqx4i)
+Image URL: [https://ipfs.algonode.dev/ipfs/bafybeiff2eh6gadtu55pwj4nx47lyd2dpoemlzp37lhf5lrpgqffhmalg4](https://ipfs.algonode.dev/ipfs/bafybeiff2eh6gadtu55pwj4nx47lyd2dpoemlzp37lhf5lrpgqffhmalg4)
 ```
 
 **Customization:**
