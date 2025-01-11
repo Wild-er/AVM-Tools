@@ -4,7 +4,7 @@ This tool allows you to decode ARC19 URLs embedded within Algorand ASAs. It retr
 
 ### What is ARC19?
 
-ARC19 is a standard for creating mutable NFTs (Non-Fungible Tokens) on Algorand. It achieves this by utilizing a special URL format within the ASA's metadata that points to mutable data stored on IPFS. The URL template allows clients to reconstruct a valid IPFS Content Identifier (CID) based on information stored in the ASA's reserve address.
+ARC19 is a standard for creating mutable NFTs (Non-Fungible Tokens) on Algorand. It achieves this by utilizing a special URL format within the ASA's metadata that points to immutable data stored on IPFS. The URL template allows clients to reconstruct a valid IPFS Content Identifier (CID) based on information stored in the ASA's mutable reserve address.
 
 ### Prerequisites
 
