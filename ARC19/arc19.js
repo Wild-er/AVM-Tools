@@ -94,39 +94,8 @@ async function decodeARC19Url(assetId) {
     const ipfsUrl = `${ipfsGateway}${cidInstance.toString()}`;
     console.log(`   - IPFS URL: ${ipfsUrl}`);
 
-    // 9. Extract metadata (optional)
-    console.log(`9. Attempting to extract ARC69 metadata (optional)...`);
-    let metadata = {}
-    try{
-      const accountInfo = await indexerClient.lookupAccountByID(reserveAddress).do();
-      const createdAsset = accountInfo.account.assets.filter(asset => asset['asset-id'] === assetId)[0]
-      if(createdAsset){
-        const transactionInfo = await indexerClient.searchForTransactions()
-          .assetID(assetId)
-          .txType('acfg')
-          .do();
-
-        const creationTransaction = transactionInfo.transactions.filter(transaction => transaction['asset-config-transaction']['asset-id'] === 0)[0];
-        if (creationTransaction && creationTransaction.note) {
-          const decodedNote = Buffer.from(creationTransaction.note, 'base64').toString('utf8');
-          try {
-            metadata = JSON.parse(decodedNote);
-            console.log("   - ARC69 metadata found:", metadata);
-          } catch (parseError) {
-            console.error("   - Error parsing transaction note as JSON:", parseError);
-          }
-        } else {
-          console.log("   - Asset creation transaction not found.");
-        }
-      } else {
-        console.log("   - Asset not found in account.");
-      }
-    } catch (error){
-      console.log("   - Could not find asset info", error.message)
-    }
-
-    // 10. Fetch and Display Metadata from IPFS
-    console.log(`10. Fetching and displaying metadata from IPFS...`);
+    // 9. Fetch and Display Metadata from IPFS
+    console.log(`9. Fetching and displaying metadata from IPFS...`);
     let ipfsResponse;
     try {
       ipfsResponse = await axios.get(ipfsUrl);
@@ -136,8 +105,8 @@ async function decodeARC19Url(assetId) {
       return null; // Return early on error
     }
 
-    // 11. Extract and Display Image URL
-    console.log(`11. Extracting and displaying image URL from metadata...`);
+    // 10. Extract and Display Image URL
+    console.log(`10. Extracting and displaying image URL from metadata...`);
     const ipfsImageHash = ipfsResponse.data.image.replace("ipfs://", "");
     const imageURL = `${ipfsGateway}${ipfsImageHash}`;
     console.log(`   - Image URL: ${imageURL}`);
