@@ -82,7 +82,7 @@ node arc19.js
 7. Constructing CID...
    - CID: bafkreifp2wiowtgdwgam6ga2ctokxsza4qugpqawm2ma7m3x2qejqrqx4i
 8. Building full IPFS URL...
-   - IPFS URL: [https://ipfs.algonode.dev/ipfs/bafkreifp2wiowtgdwgam6ga2ctokxsza4qugpqawm2ma7m3x2qejqrqx4i](https://ipfs.algonode.dev/ipfs/bafkreifp2wiowtgdwgam6ga2ctokxsza4qugpqawm2ma7m3x2qejqrqx4i)
+   - IPFS URL: https://ipfs.algonode.dev/ipfs/bafkreifp2wiowtgdwgam6ga2ctokxsza4qugpqawm2ma7m3x2qejqrqx4i
 9. Fetching and displaying metadata from IPFS...
    - Metadata fetched successfully: {
   name: 'Mostly Frens #0014',
@@ -106,10 +106,10 @@ node arc19.js
   filters: { 'Quest Level': 18, Stage: 'REM' }
 }
 10. Extracting and displaying image URL from metadata...
-   - Image URL: [https://ipfs.algonode.dev/ipfs/bafybeiff2eh6gadtu55pwj4nx47lyd2dpoemlzp37lhf5lrpgqffhmalg4](https://ipfs.algonode.dev/ipfs/bafybeiff2eh6gadtu55pwj4nx47lyd2dpoemlzp37lhf5lrpgqffhmalg4)
+   - Image URL: https://ipfs.algonode.dev/ipfs/bafybeiff2eh6gadtu55pwj4nx47lyd2dpoemlzp37lhf5lrpgqffhmalg4
 
-Final Decoded IPFS URL: [https://ipfs.algonode.dev/ipfs/bafkreifp2wiowtgdwgam6ga2ctokxsza4qugpqawm2ma7m3x2qejqrqx4i](https://ipfs.algonode.dev/ipfs/bafkreifp2wiowtgdwgam6ga2ctokxsza4qugpqawm2ma7m3x2qejqrqx4i)
-Image URL: [https://ipfs.algonode.dev/ipfs/bafybeiff2eh6gadtu55pwj4nx47lyd2dpoemlzp37lhf5lrpgqffhmalg4](https://ipfs.algonode.dev/ipfs/bafybeiff2eh6gadtu55pwj4nx47lyd2dpoemlzp37lhf5lrpgqffhmalg4)
+Final Decoded IPFS URL: https://ipfs.algonode.dev/ipfs/bafkreifp2wiowtgdwgam6ga2ctokxsza4qugpqawm2ma7m3x2qejqrqx4i
+Image URL: https://ipfs.algonode.dev/ipfs/bafybeiff2eh6gadtu55pwj4nx47lyd2dpoemlzp37lhf5lrpgqffhmalg4
 ```
 
 **Customization:**
