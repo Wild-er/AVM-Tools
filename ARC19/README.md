@@ -120,3 +120,6 @@ Contributions are welcome\! Please feel free to submit issues or pull requests.
 ### License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+
+### Spec
+https://github.com/algorandfoundation/ARCs/blob/main/ARCs/arc-0019.md
