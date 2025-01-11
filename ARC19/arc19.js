@@ -3,7 +3,7 @@ const multihash = require('multihashes');
 const cid = require('cids');
 const axios = require('axios'); // Add axios for HTTP requests
 
-// Configuration - Using TestNet for the example
+// Configuration - Using MainNet for the example
 const network = 'mainnet';
 
 // Algod and Indexer Node Configuration (Using Nodely endpoints)
