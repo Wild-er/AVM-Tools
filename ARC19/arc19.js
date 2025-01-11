@@ -113,7 +113,6 @@ async function decodeARC19Url(assetId) {
 
     return {
       ipfsUrl: ipfsUrl,
-      metadata: metadata,
       imageUrl: imageURL
     };
   } catch (error) {
