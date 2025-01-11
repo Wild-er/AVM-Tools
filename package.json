@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "algosdk": "^3.0.0",
+    "axios": "^1.7.9",
+    "cids": "^1.1.9",
+    "multihashes": "^4.0.3"
+  }
+}
