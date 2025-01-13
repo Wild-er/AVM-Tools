@@ -55,7 +55,7 @@ node arc19.js
 
 **Example:**
 
-By default, the script decodes a test asset (ID: `66753108` on TestNet) from the ARC19 specification example:
+By default, the script decodes a popular asset (ID: `812520710` on MainNet) from the ARC19 specification example:
 
 ```bash
 node arc19.js
