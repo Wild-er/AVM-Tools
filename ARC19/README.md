@@ -1,6 +1,6 @@
 ## ARC19 Decoder (arc19.js)
 
-This tool allows you to decode ARC19 URLs embedded within Algorand ASAs. It retrieves the associated metadata, including the IPFS link to the asset's content and, if available, the ARC69 metadata.
+This tool allows you to decode ARC19 URLs embedded within Algorand ASAs. It retrieves the associated metadata, including the IPFS link to the asset's content and image.
 
 ### What is ARC19?
 
