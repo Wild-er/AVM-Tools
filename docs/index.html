@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARC19 Asset Decoder</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; }
+        #assetIdInput { margin-bottom: 10px; padding: 5px; }
+        #decodeButton { padding: 8px 15px; }
+        .output-area {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 15px;
+            background-color: #f9f9f9;
+            min-height: 30px;
+        }
+        #errorOutput { color: red; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <h1>ARC19 Asset Decoder</h1>
+
+    <div>
+        <label for="assetIdInput">Algorand Asset ID:</label>
+        <input type="number" id="assetIdInput" placeholder="Enter Asset ID">
+    </div>
+
+    <button id="decodeButton">Decode Asset</button>
+
+    <h2>Decoded Information:</h2>
+
+    <div>
+        <strong>IPFS URL:</strong>
+        <div id="ipfsUrlOutput" class="output-area"></div>
+    </div>
+
+    <div>
+        <strong>Metadata:</strong>
+        <pre id="metadataOutput" class="output-area"></pre>
+    </div>
+
+    <div>
+        <strong>Image URL:</strong>
+        <div id="imageUrlOutput" class="output-area"></div>
+    </div>
+    
+    <div id="errorOutput"></div>
+
+    <script src="bundle.js" defer></script>
+</body>
+</html>
