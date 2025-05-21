@@ -1,7 +1,8 @@
 const algosdk = require('algosdk');
 const multihash = require('multihashes');
 const cid = require('cids');
-const axios = require('axios'); // Add axios for HTTP requests
+// Axios is still used by algosdk.Indexer, but we'll use fetch for our IPFS call.
+// const axios = require('axios'); // Not directly used for IPFS metadata call anymore
 
 // Configuration - Using MainNet for the example
 const network = 'mainnet';
@@ -20,6 +21,7 @@ const ipfsGateway = 'https://ipfs.algonode.dev/ipfs/';
 const ipfsOptimizerParams = '?optimizer=image&width=1152&quality=70'; // Optimizer parameters
 
 // Initialize Algod and Indexer Clients
+// algosdk.Indexer uses axios internally, so it's still a dependency of algosdk
 const indexerClient = new algosdk.Indexer({}, indexerBaseUrl, '');
 
 // --- Decoding Function ---
@@ -98,28 +100,34 @@ async function decodeARC19Url(assetId) {
     console.log(`    - Optimizer Params component: ${ipfsOptimizerParams}`);
 
     const metadataIpfsUrl = `${ipfsGateway}${cidStr}${ipfsOptimizerParams}`;
-    console.log(`    - Final constructed Metadata IPFS URL: ${metadataIpfsUrl}`); // Log the fully constructed URL
+    console.log(`    - Final constructed Metadata IPFS URL: ${metadataIpfsUrl}`);
 
-    // 9. Fetch and Display Metadata from IPFS
-    console.log(`9. Fetching metadata from IPFS...`);
-    let ipfsResponse;
+    // 9. Fetch and Display Metadata from IPFS using Fetch API
+    console.log(`9. Fetching metadata from IPFS using Fetch API...`);
+    let metadataJson; // To store the parsed JSON data
     try {
       // Explicitly check if optimizer params are in the URL string before the call
       if (!metadataIpfsUrl.includes("?optimizer=image")) {
-        const errorMessage = "CRITICAL INTERNAL ERROR: Optimizer params are missing from metadataIpfsUrl string just before the axios call!";
+        const errorMessage = "CRITICAL INTERNAL ERROR: Optimizer params are missing from metadataIpfsUrl string just before the fetch call!";
         console.error(errorMessage);
         console.error(`    - metadataIpfsUrl value: ${metadataIpfsUrl}`);
         throw new Error(errorMessage);
       }
-      console.log(`    - Attempting to GET: ${metadataIpfsUrl}`); // Log exact URL being fetched
-      ipfsResponse = await axios.get(metadataIpfsUrl);
-      console.log("    - Metadata fetched successfully. Status:", ipfsResponse.status);
-      // console.log("    - Metadata content:", ipfsResponse.data); // Uncomment for full metadata, can be verbose
-    } catch (error) {
-      console.error("    - Error fetching metadata from IPFS:", error.message);
-      if (error.response) {
-        console.error("    - Axios error details (metadata fetch):", error.response.data, error.response.status, error.response.headers);
+      console.log(`    - Attempting to GET (Fetch API): ${metadataIpfsUrl}`);
+      const response = await fetch(metadataIpfsUrl);
+
+      console.log(`    - Fetch response status: ${response.status}`);
+      if (!response.ok) {
+        // Log response text if available for more details on the error
+        const errorText = await response.text().catch(() => "Could not retrieve error text.");
+        console.error(`    - Fetch error details: ${errorText}`);
+        throw new Error(`Failed to fetch metadata from IPFS. Status: ${response.status}. URL: ${metadataIpfsUrl}`);
       }
+      metadataJson = await response.json();
+      console.log("    - Metadata fetched and parsed successfully (Fetch API).");
+      // console.log("    - Metadata content:", metadataJson); // Uncomment for full metadata
+    } catch (error) {
+      console.error("    - Error fetching or parsing metadata from IPFS (Fetch API):", error.message);
       // Log the URL that was attempted if an error occurs
       console.error(`    - URL attempted during fetch error: ${metadataIpfsUrl}`);
       return null; // Return early on error
@@ -127,15 +135,15 @@ async function decodeARC19Url(assetId) {
 
     // 10. Extract and Display Image URL
     console.log(`10. Extracting image URL from metadata...`);
-    if (!ipfsResponse.data || !ipfsResponse.data.image) {
+    if (!metadataJson || !metadataJson.image) {
         console.error("    - 'image' field not found in IPFS metadata.");
-        // console.log("    - Full metadata received:", ipfsResponse.data); // Log full data if image is missing
+        // console.log("    - Full metadata received:", metadataJson);
         return {
             metadataIpfsUrl: metadataIpfsUrl,
             imageUrl: null
         };
     }
-    const ipfsImageHash = ipfsResponse.data.image.replace("ipfs://", "");
+    const ipfsImageHash = metadataJson.image.replace("ipfs://", "");
     // Construct image URL, also with optimizer parameters
     const imageURL = `${ipfsGateway}${ipfsImageHash}${ipfsOptimizerParams}`;
     console.log(`    - Constructed Image URL: ${imageURL}`);
@@ -146,9 +154,7 @@ async function decodeARC19Url(assetId) {
     };
   } catch (error) {
     console.error("Error decoding ARC19 URL:", error.message);
-    if (error.response) {
-        console.error("Axios error details (general):", error.response.data, error.response.status, error.response.headers);
-    }
+    // Removed axios specific error logging as we are not using it for this IPFS call
     return null;
   }
 }
@@ -171,21 +177,6 @@ async function main() {
   } else {
     console.log("\nFailed to decode ARC19 URL for asset ID:", assetId);
   }
-
-  // Example with a different asset (ensure it's ARC19)
-  // const anotherAssetId = 123456789; // Replace with another valid ARC19 asset ID
-  // console.log(`\nAttempting to decode ARC19 for asset ID: ${anotherAssetId}`);
-  // const decodedDataAnother = await decodeARC19Url(anotherAssetId);
-  // if (decodedDataAnother) {
-  //   console.log("\nFinal Decoded IPFS Metadata URL:", decodedDataAnother.metadataIpfsUrl);
-  //   if(decodedDataAnother.imageUrl) {
-  //       console.log("Image URL:", decodedDataAnother.imageUrl);
-  //   } else {
-  //       console.log("Image URL could not be determined.");
-  //   }
-  // } else {
-  //   console.log("\nFailed to decode ARC19 URL for asset:", anotherAssetId);
-  // }
 }
 
 main();
