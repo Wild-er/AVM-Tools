@@ -17,7 +17,7 @@ const algodBaseUrl = network === 'mainnet'
 
 // IPFS Gateway - Using AlgoNode gateway
 const ipfsGateway = 'https://ipfs.algonode.dev/ipfs/';
-const ipfsOptimizerParams = '?optimizer=image&width=1152&quality=70'; // Added optimizer parameters
+const ipfsOptimizerParams = '?optimizer=image&width=1152&quality=70'; // Optimizer parameters
 
 // Initialize Algod and Indexer Clients
 const indexerClient = new algosdk.Indexer({}, indexerBaseUrl, '');
@@ -90,33 +90,28 @@ async function decodeARC19Url(assetId) {
     }
     console.log(`    - CID: ${cidInstance.toString()}`);
 
-    // 8. Build Full IPFS URL
-    console.log(`8. Building full IPFS URL...`);
-    // Modified to include optimizer parameters
-    const ipfsUrl = `${ipfsGateway}${cidInstance.toString()}${ipfsOptimizerParams}`;
-    console.log(`    - IPFS URL: ${ipfsUrl}`);
+    // 8. Build Full IPFS URL for metadata
+    console.log(`8. Building full IPFS URL for metadata (with optimizer params)...`);
+    // This URL is for the metadata JSON file, now also including optimizer params as requested.
+    const metadataIpfsUrl = `${ipfsGateway}${cidInstance.toString()}${ipfsOptimizerParams}`;
+    console.log(`    - Metadata IPFS URL: ${metadataIpfsUrl}`);
 
     // 9. Fetch and Display Metadata from IPFS
-    console.log(`9. Fetching and displaying metadata from IPFS...`);
+    console.log(`9. Fetching metadata from IPFS (using URL with optimizer params)...`);
     let ipfsResponse;
     try {
-      // Note: The metadata JSON itself is fetched without optimizer params,
-      // as those are for image assets. If the metadata URL itself were an image,
-      // then params would be added here too.
-      ipfsResponse = await axios.get(`${ipfsGateway}${cidInstance.toString()}`);
+      // Fetching metadata using the URL that includes optimizer parameters.
+      ipfsResponse = await axios.get(metadataIpfsUrl);
       console.log("    - Metadata fetched successfully:", ipfsResponse.data);
     } catch (error) {
       console.error("    - Error fetching metadata from IPFS:", error.message);
-      // Attempt to fetch with optimizer params if the direct fetch fails,
-      // though typically metadata isn't an image.
-      try {
-        console.log("    - Retrying metadata fetch with optimizer params (less common)...");
-        ipfsResponse = await axios.get(ipfsUrl); // Use the already constructed ipfsUrl with params
-        console.log("    - Metadata fetched successfully with optimizer params:", ipfsResponse.data);
-      } catch (retryError) {
-         console.error("    - Error fetching metadata from IPFS (with optimizer params):", retryError.message);
-         return null; // Return early on error
+      // The retry logic is implicitly handled if the first attempt fails and an error is thrown.
+      // No need for a separate retry block if the primary fetch now uses the desired URL.
+      // If the error is critical, it will be caught by the outer try-catch.
+      if (error.response) {
+        console.error("    - Axios error details (metadata fetch):", error.response.data, error.response.status, error.response.headers);
       }
+      return null; // Return early on error
     }
 
     // 10. Extract and Display Image URL
@@ -124,24 +119,24 @@ async function decodeARC19Url(assetId) {
     if (!ipfsResponse.data || !ipfsResponse.data.image) {
         console.error("    - 'image' field not found in IPFS metadata.");
         return {
-            ipfsUrl: ipfsUrl, // Still return the metadata URL
+            metadataIpfsUrl: metadataIpfsUrl, // Still return the metadata URL
             imageUrl: null
         };
     }
     const ipfsImageHash = ipfsResponse.data.image.replace("ipfs://", "");
-    // Modified to include optimizer parameters
+    // Construct image URL, also with optimizer parameters
     const imageURL = `${ipfsGateway}${ipfsImageHash}${ipfsOptimizerParams}`;
     console.log(`    - Image URL: ${imageURL}`);
 
     return {
-      ipfsUrl: ipfsUrl,
+      metadataIpfsUrl: metadataIpfsUrl, // Changed from ipfsUrl to metadataIpfsUrl for clarity
       imageUrl: imageURL
     };
   } catch (error) {
     console.error("Error decoding ARC19 URL:", error.message);
     if (error.response) {
         // Log more details if it's an axios error
-        console.error("Axios error details:", error.response.data, error.response.status, error.response.headers);
+        console.error("Axios error details (general):", error.response.data, error.response.status, error.response.headers);
     }
     return null;
   }
@@ -156,7 +151,7 @@ async function main() {
   const decodedData = await decodeARC19Url(assetId);
 
   if (decodedData) {
-    console.log("\nFinal Decoded IPFS Metadata URL:", decodedData.ipfsUrl);
+    console.log("\nFinal Decoded IPFS Metadata URL:", decodedData.metadataIpfsUrl);
     if(decodedData.imageUrl) {
         console.log("Image URL:", decodedData.imageUrl);
     } else {
@@ -171,7 +166,7 @@ async function main() {
   // console.log(`\nAttempting to decode ARC19 for asset ID: ${anotherAssetId}`);
   // const decodedDataAnother = await decodeARC19Url(anotherAssetId);
   // if (decodedDataAnother) {
-  //   console.log("\nFinal Decoded IPFS Metadata URL:", decodedDataAnother.ipfsUrl);
+  //   console.log("\nFinal Decoded IPFS Metadata URL:", decodedDataAnother.metadataIpfsUrl);
   //   if(decodedDataAnother.imageUrl) {
   //       console.log("Image URL:", decodedDataAnother.imageUrl);
   //   } else {
